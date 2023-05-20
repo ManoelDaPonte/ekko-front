@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div>
       <h1>
-        Quentin tu pues
+        Nina la plus belle
       </h1>
     </div>
   )
