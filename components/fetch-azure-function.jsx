@@ -15,6 +15,11 @@ export default function FetchDataAzureFunction() {
       console.log(response.data); // Handle the response data
     } catch (error) {
       console.error(error); // Handle any errors
+      return (
+        <div>
+          <button>Call Azure Function</button>
+        </div>
+      )
     }
   };
 
