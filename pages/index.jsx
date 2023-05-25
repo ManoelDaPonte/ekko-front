@@ -4,6 +4,7 @@ import utilStyles from '../styles/utils.module.css';
 import { getSortedPostsData } from '../lib/posts';
 import Link from 'next/link';
 import Date from '../components/date';
+import FetchDataAzureFunction from '../components/fetch-azure-function';
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
@@ -26,6 +27,10 @@ export default function Home({ allPostsData }) {
         <p>
           Sample website
         </p>
+
+
+        <FetchDataAzureFunction />
+
       </section>
 
 
