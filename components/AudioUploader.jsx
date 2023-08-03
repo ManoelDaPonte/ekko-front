@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 const AudioUploader = () => {
   const [selectedAudio, setSelectedAudio] = useState(null);
+  const [transcription, setTranscription] = useState('');
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -40,6 +41,7 @@ const AudioUploader = () => {
         if (response.ok) {
           const responseData = await response.text();
           console.log('Response from Azure Function:', responseData);
+          setTranscription(responseData);
           setSelectedAudio(null); // Clear the selected audio after transfer
         } else {
           console.error('Error sending the audio to Azure Function.');
@@ -63,7 +65,6 @@ const AudioUploader = () => {
           <div>
             <h3>Selected Audio:</h3>
             <p>{selectedAudio.name}</p>
-            {/* Add more UI elements to handle the selected audio */}
           </div>
         ) : (
           <p>Drag and drop an audio file (.wav) here</p>
@@ -78,6 +79,12 @@ const AudioUploader = () => {
       <button onClick={handleTransferFile} disabled={!selectedAudio}>
         Transfer File
       </button>
+      {transcription && (
+        <div>
+          <h3>Transcription:</h3>
+          <p>{transcription}</p>
+        </div>
+      )}
     </div>
   );
 };
