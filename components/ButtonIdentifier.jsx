@@ -1,5 +1,4 @@
 import style from "../styles/buttonHeader.module.css";
-
 const LogInButton = () => {
   return (
     <div className={style.buttonContainer}>
