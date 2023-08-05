@@ -1,17 +1,26 @@
-import React, { useState } from "react";
 import AudioUploader from "../components/AudioUploader";
-import Title from "../components/Title";
-import LogInButton from "../components/ButtonIdentifier";
-import SignInButton from "../components/ButtonIdentifier2";
-import style from "../styles/app.module.css";
+import Logo from "../components/header/Logo";
+import Button from "../components/Button";
+
+import styles from "../styles/App.module.css";
 
 const App = () => {
   return (
-    <div className={style.appContainer}>
-      <div className={style.header}>
-        <Title></Title>
-        <LogInButton></LogInButton>
-        <SignInButton></SignInButton>
+    <div className={styles.appContainer}>
+      <div className={styles.header}>
+        <Logo />
+        <div className={styles.group}>
+          <Button
+            name="Log In"
+            backgroundColor="#007bff"
+            backgroundColorHover="#0056b3"
+          ></Button>
+          <Button
+            name="Sign Up"
+            backgroundColor="#38B000"
+            backgroundColorHover="#006400"
+          ></Button>
+        </div>
       </div>
 
       <div>
