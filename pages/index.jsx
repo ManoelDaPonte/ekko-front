@@ -1,4 +1,4 @@
-import AudioUploader from "../components/AudioUploader";
+import AudioSelectAndProcess from "../components/audio/AudioSelectAndProcess";
 import Logo from "../components/header/Logo";
 import Button from "../components/Button";
 
@@ -23,9 +23,8 @@ const App = () => {
         </div>
       </div>
 
-      <div>
-        <h1>Audio Uploader</h1>
-        <AudioUploader />
+      <div className={styles.body}>
+        <AudioSelectAndProcess />
       </div>
     </div>
   );
