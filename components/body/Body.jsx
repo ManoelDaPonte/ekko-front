@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import AudioFileHandler from "./AudioFileHandler";
-import AzureFunctionCaller from "./AzureFunctionCaller";
-import TranscriptionDisplay from "./TranscriptionDisplay";
+import DropBox from "./DropBox";
+import ButtonRun from "./ButtonRun";
+import TranscriptedText from "./TranscriptedText";
+import styles from "../../styles/body/Body.module.css";
 
 const AudioSelectAndProcess = () => {
   const [selectedAudio, setSelectedAudio] = useState(null);
@@ -9,15 +10,16 @@ const AudioSelectAndProcess = () => {
 
   return (
     <div>
-      <AudioFileHandler
+      <DropBox
         selectedAudio={selectedAudio}
         setSelectedAudio={setSelectedAudio}
       />
-      <AzureFunctionCaller
+
+      <ButtonRun
         selectedAudio={selectedAudio}
         setTranscription={setTranscription}
       />
-      <TranscriptionDisplay transcription={transcription} />
+      <TranscriptedText transcription={transcription} />
     </div>
   );
 };

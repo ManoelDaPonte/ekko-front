@@ -1,0 +1,4 @@
+.smallImage {
+  width: 100px; /* or whatever size you prefer */
+  height: auto; /* maintains aspect ratio */
+}

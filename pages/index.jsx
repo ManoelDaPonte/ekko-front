@@ -1,7 +1,7 @@
-import AudioSelectAndProcess from "../components/audio/AudioSelectAndProcess";
+import AudioSelectAndProcess from "../components/body/Body";
 import Logo from "../components/header/Logo";
-import styles from "../styles/app.module.css";
 import Button from "../components/Button";
+import styles from "../styles/app.module.css";
 
 const App = () => {
   return (

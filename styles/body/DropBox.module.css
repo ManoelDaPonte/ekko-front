@@ -1,0 +1,15 @@
+.fileInput {
+  display: none;
+}
+
+.DropBox {
+  width: 400px;
+  border: 1px solid black;
+  padding: 10px;
+  background: linear-gradient(to top, #cf2d2d, #d48328);
+  border-radius: 20px;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  text-align: center; /* Center the text itself */
+  justify-content: space-between;
+}

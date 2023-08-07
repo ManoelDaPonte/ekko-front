@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/AudioFileHandler.module.css";
+import styles from "../../styles/body/DropBox.module.css";
 
 const AudioFileHandler = ({ selectedAudio, setSelectedAudio }) => {
   const handleFileChange = (event) => {
@@ -26,9 +26,13 @@ const AudioFileHandler = ({ selectedAudio, setSelectedAudio }) => {
   };
 
   return (
-    <div className={styles.audioDropZone}>
+    <div>
       <label>
-        <div onDrop={handleDrop} onDragOver={handleDragOver}>
+        <div
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          className={styles.DropBox}
+        >
           {selectedAudio ? (
             <div>
               <h3>Selected Audio:</h3>
