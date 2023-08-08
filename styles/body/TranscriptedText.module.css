@@ -1,3 +1,8 @@
-.blankText {
-  color: #f2f4f6; /* Assuming this is the background color */
+.scrollableBox {
+  width: 80vw;
+  height: 20vw;
+  overflow: auto; /* Enable scroll if the content overflows */
+  padding: 10px; /* Some padding inside the box */
+  margin-top: 50px;
+  color: #f2f4f6;
 }

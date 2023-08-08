@@ -3,13 +3,15 @@
 }
 
 .DropBox {
-  width: 400px;
-  border: 1px solid black;
-  padding: 10px;
-  background: linear-gradient(to top, #cf2d2d, #d48328);
+  width: 50vw;
+  height: 30vw;
+  border: 2px dotted rgb(205, 106, 34);
+  cursor: pointer;
   border-radius: 20px;
-  align-items: center; /* Center vertically */
-  justify-content: center; /* Center horizontally */
-  text-align: center; /* Center the text itself */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #f2f4f6;
 }

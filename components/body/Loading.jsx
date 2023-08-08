@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import styles from "../../styles/body/Loading.module.css";
+import { CircularProgressbar } from "react-circular-progressbar";
 
 const AzureFunctionCaller = ({ selectedAudio, setTranscription }) => {
+  const [uploading, setUploading] = useState(false);
+
   const handleTransferFile = async () => {
     if (selectedAudio) {
       try {
+        setUploading(true); // Start the upload
         const formData = new FormData();
         formData.append("audio", selectedAudio);
 
@@ -24,16 +29,39 @@ const AzureFunctionCaller = ({ selectedAudio, setTranscription }) => {
         }
       } catch (error) {
         console.error("Error:", error);
+      } finally {
+        setUploading(false);
       }
     } else {
       alert("Please select an audio file first.");
     }
   };
 
+  useEffect(() => {
+    if (selectedAudio) {
+      handleTransferFile(); // Automatically trigger the function if audio is selected
+    }
+  }, [selectedAudio]);
+
   return (
-    <button onClick={handleTransferFile} disabled={!selectedAudio}>
-      Go
-    </button>
+    <div className={styles.uploadContainer}>
+      {uploading ? (
+        <div className={styles.progressContainer}>
+          <div className={styles.loadingSpinner} />
+          <CircularProgressbar
+            value={100}
+            styles={{
+              path: {
+                stroke: "orange", // Custom progress bar color
+              },
+              text: {
+                fill: "orange", // Custom text color />
+              },
+            }}
+          />
+        </div>
+      ) : null}
+    </div>
   );
 };
 

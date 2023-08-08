@@ -11,13 +11,13 @@ const App = () => {
         <div className={styles.group}>
           <Button
             name="Log In"
-            backgroundColor="#007bff"
-            backgroundColorHover="#0056b3"
+            backgroundColor="rgba(0, 0, 0, 0)"
+            backgroundColorHover="rgba(0, 0, 0, 0)"
           ></Button>
           <Button
             name="Sign Up"
-            backgroundColor="#38B000"
-            backgroundColorHover="#006400"
+            backgroundColor="rgb(10, 10, 10, 0.3)"
+            backgroundColorHover="rgb(10, 10, 10, 0.7)"
           ></Button>
         </div>
       </div>

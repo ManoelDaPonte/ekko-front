@@ -1,3 +1,5 @@
-.blankText {
-  color: #f2f4f6; /* Assuming this is the background color */
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
