@@ -2,14 +2,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100vw;
   height: 100vh; /* Make the container take full viewport height */
 }
 
 .header {
+  position: sticky;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100vw;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  background-color: rgb(1, 1, 1, 0.2);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  width: 95vw;
+  border-top: 1pfx solid rgb(171, 97, 50);
 }
 
 .group {

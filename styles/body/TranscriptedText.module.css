@@ -3,6 +3,9 @@
   height: 20vw;
   overflow: auto; /* Enable scroll if the content overflows */
   padding: 10px; /* Some padding inside the box */
-  margin-top: 50px;
-  color: #f2f4f6;
+  color: aliceblue;
+  background-color: rgba(86, 86, 86, 0.1);
+  border-radius: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
 }
