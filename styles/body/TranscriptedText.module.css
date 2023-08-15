@@ -1,4 +1,6 @@
 .scrollableBox {
+  margin-top: 100px;
+  margin-bottom: 100px;
   width: 80vw;
   height: 20vw;
   overflow: auto; /* Enable scroll if the content overflows */

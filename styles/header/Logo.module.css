@@ -1,4 +1,5 @@
 .smallImage {
-  width: 150px; /* or whatever size you prefer */
-  height: auto; /* maintains aspect ratio */
+  margin-left: 20px;
+  width: auto; /* or whatever size you prefer */
+  height: 100px; /* maintains aspect ratio */
 }

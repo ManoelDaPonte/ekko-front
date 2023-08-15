@@ -12,17 +12,15 @@
   justify-content: space-between;
   align-items: center;
   width: 100vw;
-  top: 0px;
-  right: 0px;
-  left: 0px;
   background-color: rgb(1, 1, 1, 0.2);
 }
 
 .footer {
   display: flex;
   justify-content: space-between;
+  margin-top: 50px;
   width: 95vw;
-  border-top: 1pfx solid rgb(171, 97, 50);
+  border-top: 1px solid rgb(171, 97, 50);
 }
 
 .group {
