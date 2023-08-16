@@ -6,7 +6,7 @@ const TranscriptionDisplay = ({ transcription }) => {
   return (
     <div className={styles.scrollableBox}>
       {transcription}
-      <LoremIpsum p={4} />
+      <LoremIpsum p={0} />
     </div>
   );
 };

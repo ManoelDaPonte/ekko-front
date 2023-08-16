@@ -1,0 +1,7 @@
+/* styles/CountrySelector.css */
+.option {
+  background-repeat: no-repeat;
+  background-size: 20px 15px;
+  background-position: 2px center;
+  padding-left: 25px;
+}

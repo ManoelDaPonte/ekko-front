@@ -3,35 +3,5 @@
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  height: 100vh; /* Make the container take full viewport height */
-}
-
-.header {
-  position: sticky;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100vw;
-  background-color: rgb(1, 1, 1, 0.2);
-}
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 50px;
-  width: 95vw;
-  border-top: 1px solid rgb(171, 97, 50);
-}
-
-.group {
-  display: flex;
-  align-items: center;
-}
-
-.body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
-  width: 100vw;
 }

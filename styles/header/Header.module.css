@@ -1,0 +1,13 @@
+.header {
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  background-color: rgb(1, 1, 1, 0.2);
+}
+
+.group {
+  display: flex;
+  align-items: center;
+}
