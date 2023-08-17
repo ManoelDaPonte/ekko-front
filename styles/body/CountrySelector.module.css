@@ -1,7 +1,7 @@
 /* styles/CountrySelector.css */
-.option {
-  background-repeat: no-repeat;
-  background-size: 20px 15px;
-  background-position: 2px center;
-  padding-left: 25px;
+.container {
+  display: flex;
+  width: 100vw;
+  align-items: center;
+  color: rgb(255, 255, 255);
 }

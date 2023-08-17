@@ -39,7 +39,7 @@ const AudioFileHandler = ({ selectedAudio, setSelectedAudio }) => {
               <p>{selectedAudio.name}</p>
             </div>
           ) : (
-            <p>Select file</p>
+            <p></p>
           )}
         </div>
         <input
