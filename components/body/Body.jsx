@@ -10,7 +10,7 @@ const Body = () => {
   const [transcription, setTranscription] = useState("");
 
   return (
-    <div>
+    <div className={styles.body}>
       <div className={styles.buttonContainer}>
         <DropBox
           selectedAudio={selectedAudio}

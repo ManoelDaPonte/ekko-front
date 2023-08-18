@@ -2,7 +2,7 @@
   margin-top: 100px;
   margin-bottom: 100px;
   width: 80vw;
-  height: 20vw;
+  height: 20vh;
   overflow: auto; /* Enable scroll if the content overflows */
   padding: 10px; /* Some padding inside the box */
   color: aliceblue;
@@ -10,4 +10,31 @@
   border-radius: 10px;
   padding-left: 50px;
   padding-right: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1; /* Ensure header appears above content */
+  background-color: rgba(86, 86, 86, 0.9); /* Adjust color as needed */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.header h2 {
+  margin: 0;
+  color: white; /* Set header title color */
+}
+
+.header button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }
