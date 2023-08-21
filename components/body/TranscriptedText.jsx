@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../../styles/body/TranscriptedText.module.css";
 import { LoremIpsum } from "react-lorem-ipsum";
+import { FaCopy, FaFileCode, FaFileAlt, FaClock } from "react-icons/fa";
 
 const TranscriptionDisplay = ({ transcription }) => {
   const copyToClipboard = () => {
@@ -9,14 +10,21 @@ const TranscriptionDisplay = ({ transcription }) => {
   };
 
   return (
-    <div className={styles.scrollableBox}>
+    <div className={styles.container}>
       <div className={styles.header}>
         <h2>Title of the Box</h2>
-        <button onClick={copyToClipboard}>Copy Text</button>
+        <div className={styles.iconsWrapper}>
+          <FaFileCode className={styles.icon} title="JSON" />
+          <FaFileAlt className={styles.icon} title="TXT" />
+          <FaClock className={styles.icon} title="Timecode" />
+          <FaCopy onClick={copyToClipboard} className={styles.icon} />
+        </div>
       </div>
-      <div className={styles.transcription}>
-        {transcription}
-        <LoremIpsum p={3} />
+      <div className={styles.contentWrapper}></div>
+      <div className={styles.contentWrapper2}></div>
+      <div className={styles.scrollableBox}>
+        <div className={styles.text}>{transcription}</div>
+        <LoremIpsum p={5} />
       </div>
     </div>
   );

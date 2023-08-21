@@ -1,13 +1,11 @@
 .scrollableBox {
-  margin-top: 100px;
-  margin-bottom: 100px;
   width: 80vw;
-  height: 20vh;
+  height: 30vh;
   overflow: auto; /* Enable scroll if the content overflows */
-  padding: 10px; /* Some padding inside the box */
   color: aliceblue;
-  background-color: rgba(86, 86, 86, 0.1);
-  border-radius: 10px;
+  background-color: rgba(80, 80, 80, 0.1);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   padding-left: 50px;
   padding-right: 50px;
   margin-left: auto;
@@ -15,14 +13,17 @@
 }
 
 .header {
-  position: sticky;
-  top: 0;
-  z-index: 1; /* Ensure header appears above content */
-  background-color: rgba(86, 86, 86, 0.9); /* Adjust color as needed */
+  width: 80vw;
+  height: 5vh;
+  background-color: rgba(80, 80, 80, 0.1); /* Adjust color as needed */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 10px 10px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .header h2 {
@@ -31,10 +32,46 @@
 }
 
 .header button {
-  background-color: #007bff;
+  background-color: rgba(54, 48, 48, 0.5);
   color: white;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.contentWrapper {
+  background-color: rgba(80, 80, 80, 0.1);
+  padding-top: 5px;
+  border-bottom: 0.1px solid rgb(171, 97, 50);
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+.contentWrapper2 {
+  padding-top: 20px;
+  width: 80vw;
+  background-color: rgba(80, 80, 80, 0.1);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.iconsWrapper {
+  display: flex;
+  gap: 10px; /* Adds space between icons */
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: #333;
+  transition: color 0.2s;
+}
+
+.icon:hover {
+  color: #666;
+}
+
+.container {
+  margin-block: 100px;
 }
