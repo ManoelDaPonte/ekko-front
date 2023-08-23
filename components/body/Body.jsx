@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import DropBox from "./DropBox";
-import ButtonRun from "./Loading";
+import ButtonRun from "./LaunchTranscription";
 import TranscriptedText from "./TranscriptedText";
 import CountrySelector from "./CountrySelector";
 import styles from "../../styles/body/Body.module.css";

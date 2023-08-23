@@ -32,16 +32,7 @@ const AudioFileHandler = ({ selectedAudio, setSelectedAudio }) => {
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           className={styles.DropBox}
-        >
-          {selectedAudio ? (
-            <div>
-              <h3>Selected Audio:</h3>
-              <p>{selectedAudio.name}</p>
-            </div>
-          ) : (
-            <p></p>
-          )}
-        </div>
+        ></div>
         <input
           type="file"
           accept=".wav"

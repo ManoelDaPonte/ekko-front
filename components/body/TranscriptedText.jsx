@@ -35,7 +35,6 @@ const TranscriptionDisplay = ({ transcription }) => {
       <div className={styles.contentWrapper2}></div>
       <div className={styles.scrollableBox}>
         <div className={styles.text}>{transcription}</div>
-        <LoremIpsum p={3} />
       </div>
     </div>
   );
