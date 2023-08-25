@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import DropBox from "./DropBox";
-import ButtonRun from "./LaunchTranscription";
+import LaunchTranscription from "./LaunchTranscription";
 import TranscriptedText from "./TranscriptedText";
 import CountrySelector from "./CountrySelector";
 import styles from "../../styles/body/Body.module.css";
@@ -8,6 +8,11 @@ import styles from "../../styles/body/Body.module.css";
 const Body = () => {
   const [selectedAudio, setSelectedAudio] = useState(null);
   const [transcription, setTranscription] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  const handleCountryChange = (code) => {
+    setSelectedCountry({ code }); // Assuming you're only receiving the code as a string.
+  };
 
   return (
     <div className={styles.body}>
@@ -16,14 +21,18 @@ const Body = () => {
           selectedAudio={selectedAudio}
           setSelectedAudio={setSelectedAudio}
         />
-
-        <ButtonRun
+        <LaunchTranscription
           selectedAudio={selectedAudio}
           setTranscription={setTranscription}
+          selectedCountry={selectedCountry?.code}
         />
       </div>
-      <CountrySelector />
-      <TranscriptedText transcription={transcription} />
+      
+      <CountrySelector onCountryChange={handleCountryChange} />
+      <TranscriptedText
+        transcription={transcription}
+        selectedAudio={selectedAudio}
+      />
     </div>
   );
 };

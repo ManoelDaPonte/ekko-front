@@ -3,7 +3,7 @@ import styles from "../../styles/body/TranscriptedText.module.css";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { FaCopy, FaFileCode, FaFileAlt, FaClock } from "react-icons/fa";
 
-const TranscriptionDisplay = ({ transcription }) => {
+const TranscriptionDisplay = ({ transcription, selectedAudio }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const copyToClipboard = async () => {
@@ -20,7 +20,7 @@ const TranscriptionDisplay = ({ transcription }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2>Title of the Box</h2>
+        <h2>{selectedAudio ? selectedAudio.name : ""}</h2>
         <div className={styles.iconsWrapper}>
           <FaFileCode className={styles.icon} title="JSON" />
           <FaFileAlt className={styles.icon} title="TXT" />

@@ -1,23 +1,34 @@
-import React from "react";
+import React, { useRef } from "react";
 import styles from "../../styles/body/DropBox.module.css";
 
 const AudioFileHandler = ({ selectedAudio, setSelectedAudio }) => {
+  const audio_mime_types = [
+    "audio/mpeg",
+    "audio/wav",
+    "audio/aac",
+    "audio/flac",
+    "audio/ogg",
+    "audio/x-ms-wma",
+    "audio/x-aiff",
+    "audio/alac",
+    "audio/mp4",
+    "audio/wave",
+  ];
+  const fileInputRef = useRef(null);
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    if (file && file.type === "audio/wav") {
+    if (file && audio_mime_types.includes(file.type)) {
       setSelectedAudio(file);
-    } else {
-      alert("Please select a valid .wav audio file.");
     }
+    event.target.value = null; // Resetting the input value
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
-    if (file && file.type === "audio/wav") {
+    if (file && audio_mime_types.includes(file.type)) {
       setSelectedAudio(file);
-    } else {
-      alert("Please drop a valid .wav audio file.");
     }
   };
 
@@ -25,21 +36,40 @@ const AudioFileHandler = ({ selectedAudio, setSelectedAudio }) => {
     event.preventDefault();
   };
 
+  const clearSelectedAudio = () => {
+    setSelectedAudio(null);
+  };
+  const handleDropBoxClick = () => {
+    fileInputRef.current.click();
+  };
+
   return (
     <div>
-      <label>
-        <div
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          className={styles.DropBox}
-        ></div>
-        <input
-          type="file"
-          accept=".wav"
-          onChange={handleFileChange}
-          className={styles.fileInput}
-        />
-      </label>
+      <div
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onClick={handleDropBoxClick}
+        className={styles.DropBox}
+      >
+        {selectedAudio ? (
+          <div></div>
+        ) : (
+          <div>
+            <div className={styles.promptContainerDrop}>
+              Drop an audio file here
+            </div>
+            <div className={styles.separator}></div>
+            <div className={styles.promptContainer}>or click to select</div>
+          </div>
+        )}
+      </div>
+      <input
+        type="file"
+        accept={audio_mime_types.join(", ")}
+        onChange={handleFileChange}
+        ref={fileInputRef}
+        style={{ display: "none" }}
+      />
     </div>
   );
 };

@@ -4,9 +4,13 @@ import Select from "react-select";
 import CountryFlag from "react-country-flag";
 import styles from "../../styles/body/CountrySelector.module.css";
 
-function CountrySelector() {
+function CountrySelector({ onCountryChange }) {
   const [languages, setLanguages] = useState([]);
-  const [selectedLanguage, setSelectedLanguage] = useState(null);
+  const [selectedLanguage, setSelectedLanguage] = useState({
+    value: "default",
+    label: "Default",
+    code: "",
+  });
 
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/all")
@@ -18,15 +22,23 @@ function CountrySelector() {
 
         const mappedLanguages = filteredCountries.map((country) => {
           let language = "";
+          let languageCode = "";
           switch (country.name.common) {
+            case "Default":
+              language = "Default";
+              languageCode = "";
+              break;
             case "France":
               language = "French";
+              languageCode = "fr";
               break;
             case "United Kingdom":
               language = "English";
+              languageCode = "en";
               break;
             case "Spain":
               language = "Spanish";
+              languageCode = "es";
               break;
             default:
               break;
@@ -35,6 +47,7 @@ function CountrySelector() {
           return {
             value: country.cca2,
             label: language,
+            code: languageCode,
           };
         });
 
@@ -49,6 +62,7 @@ function CountrySelector() {
         svg
         style={{ width: "20px", marginRight: "10px", marginLeft: "10px" }}
       />
+
       {label}
     </div>
   );
@@ -95,13 +109,19 @@ function CountrySelector() {
     }),
   };
 
+  const handleCountrySelect = (selectedOption) => {
+    console.log(selectedOption.code);
+    setSelectedLanguage(selectedOption);
+    onCountryChange(selectedOption.code); // Updated to match the new prop name
+  };
+
   return (
     <div className={styles.container}>
       <Select
         options={languages}
         components={{ Option: CustomOption }}
         value={selectedLanguage}
-        onChange={setSelectedLanguage}
+        onChange={handleCountrySelect} // Use the new handleCountrySelect function
         styles={customStyles}
       />
     </div>

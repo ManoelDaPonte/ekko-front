@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../LoadingSpinner";
 import styles from "../../styles/body/LaunchTranscription.module.css";
 
-const LaunchTranscription = ({ selectedAudio, setTranscription }) => {
+const LaunchTranscription = ({
+  selectedAudio,
+  setTranscription,
+  selectedCountry,
+}) => {
   const [uploading, setUploading] = useState(false);
 
   const handleTransferFile = async (audioFile) => {
@@ -10,6 +14,8 @@ const LaunchTranscription = ({ selectedAudio, setTranscription }) => {
       setUploading(true); // Start the upload
       const formData = new FormData();
       formData.append("audio", audioFile);
+      formData.append("language", selectedCountry || "");
+      console.log(selectedCountry);
 
       const response = await fetch(
         "https://first-function-app-mano.azurewebsites.net/api/first-function-app?code=TY5HsBfB4TMdORnbtVp4wRzXVP7AiVkjM5q1qNrFacU2AzFu19vykw==",
