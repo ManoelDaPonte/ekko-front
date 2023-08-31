@@ -13,12 +13,12 @@ const LaunchTranscription = ({
     try {
       setUploading(true); // Start the upload
       const formData = new FormData();
-      formData.append("audio", audioFile);
+      formData.append("file", audioFile);
       formData.append("language", selectedCountry || "");
       console.log(selectedCountry);
 
       const response = await fetch(
-        "https://first-function-app-mano.azurewebsites.net/api/first-function-app?code=TY5HsBfB4TMdORnbtVp4wRzXVP7AiVkjM5q1qNrFacU2AzFu19vykw==",
+        "https://first-function-app-mano.azurewebsites.net/api/AudioTranscriptionAndSave?code=Qm6gpIlqsZ8xfqOyIQriQbOIEK8iSKWjriYCp5jBekCLAzFuL7OTdg==",
         {
           method: "POST",
           body: formData,
