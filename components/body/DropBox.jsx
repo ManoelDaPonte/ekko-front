@@ -15,6 +15,8 @@ const AudioFileHandler = ({ selectedAudio, setSelectedAudio }) => {
     "audio/wave",
     "video/mpeg",
     "video/x-matroska",
+    "video/quicktime",
+    "video/video/mp4",
   ];
   const fileInputRef = useRef(null);
 

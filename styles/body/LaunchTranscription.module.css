@@ -1,4 +1,6 @@
 .uploadContainer {
   position: absolute;
   align-items: center;
+  text-align: center;
+  color: aliceblue;
 }

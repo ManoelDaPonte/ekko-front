@@ -8,22 +8,17 @@ const LaunchTranscription = ({
   selectedCountry,
 }) => {
   const [uploading, setUploading] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState(""); // Step 1: New state variable
 
   const determineFunctionUrl = (file) => {
     // Check file type (based on MIME type for simplicity)
     const isVideo = file.type.startsWith("video/");
     const isAudio = file.type.startsWith("audio/");
 
-    // Check file size
-    const isLarge = file.size > 23 * 1024 * 1024; // 23 MB in bytes
-
     if (isVideo)
       return "https://first-function-app-mano.azurewebsites.net/api/UploadVideo?code=OA1fpGFHMLEOovpL4sFZGKe0bCgufobl8GY2z6N96om9AzFu__FHuw==";
-    if (isAudio && isLarge)
-      return "https://first-function-app-mano.azurewebsites.net/api/UploadLargeFile?code=usY-fUZF-nRIw5SJk2HwMD4K1u5ukAyD_3kFPkUTz675AzFuuKHPuA==";
-    if (isAudio && !isLarge)
-      return "https://first-function-app-mano.azurewebsites.net/api/UploadSmallFile?code=HsHSFrnMLCXBKZzSpv1v_65EA4swobp6yyBvHQ36c4kTAzFuV3t8dg==";
-
+    if (isAudio)
+      return "https://first-function-app-mano.azurewebsites.net/api/UploadAudio?code=hHOvVtha7IpxIm2HPRvLL8sw1auxVPUypy4Yb9w44i6CAzFuaDNeEA==";
     return null; // if file type doesn't match any category
   };
 
@@ -74,22 +69,27 @@ const LaunchTranscription = ({
     return responseData.result;
   };
 
-  const handleTransferFile = async (audioFile) => {
+  const handleTransferFile = async (file) => {
     console.log("handleTransferFile invoked");
     try {
       setUploading(true);
 
       const formDataAudio = new FormData();
-      formDataAudio.append("file", audioFile);
+      formDataAudio.append("file", file);
 
-      const functionUrl = determineFunctionUrl(audioFile);
+      const functionUrl = determineFunctionUrl(file);
       if (!functionUrl) {
         alert("Unsupported file type!");
         return;
       }
 
+      setCurrentStatus("Receiving your file..."); // Step 2: Update the message
       const UUID = await callAzureFunction(functionUrl, formDataAudio);
+
+      setCurrentStatus("Magic's on the way...");
       const translationUUID = await getTranslation(UUID, selectedCountry);
+
+      setCurrentStatus("Retrieving the result...");
       const translation = await fetchTranslationResult(translationUUID);
 
       console.log("Translation:", translation);
@@ -128,6 +128,7 @@ const LaunchTranscription = ({
       className={styles.uploadContainer}
     >
       {uploading && <LoadingSpinner />}
+      {uploading && <p>{currentStatus}</p>}
     </div>
   );
 };
