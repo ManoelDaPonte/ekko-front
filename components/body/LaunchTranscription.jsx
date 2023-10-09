@@ -10,6 +10,15 @@ const LaunchTranscription = ({
   const [uploading, setUploading] = useState(false);
   const [currentStatus, setCurrentStatus] = useState(""); // Step 1: New state variable
 
+  const timeout = (ms) => {
+    return new Promise((_, reject) =>
+      setTimeout(
+        () => reject(new Error(`Operation timed out after ${ms} ms`)),
+        ms
+      )
+    );
+  };
+
   const determineFunctionUrl = (file) => {
     // Check file type (based on MIME type for simplicity)
     const isVideo = file.type.startsWith("video/");
@@ -87,7 +96,10 @@ const LaunchTranscription = ({
       const UUID = await callAzureFunction(functionUrl, formDataAudio);
 
       setCurrentStatus("Magic's on the way...");
-      const translationUUID = await getTranslation(UUID, selectedCountry);
+      const translationUUID = await Promise.race([
+        getTranslation(UUID, selectedCountry),
+        timeout(600000), // 10 minutes = 600,000 milliseconds
+      ]);
 
       setCurrentStatus("Retrieving the result...");
       const translation = await fetchTranslationResult(translationUUID);
