@@ -1,0 +1,17 @@
+.buttonContainer {
+    margin-top: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.body {
+    height: 100%;
+    width: 97%;
+    flex-direction: column;
+}
+
+.element {
+    margin-bottom: 50px;
+}
