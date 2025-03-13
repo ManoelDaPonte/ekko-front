@@ -1,13 +1,13 @@
 {
-    "version": 2,
-    "functions": {
-      "api/transcribe.js": {
-        "memory": 1024,
-        "maxDuration": 60
-      },
-      "api/*.js": {
-        "memory": 512,
-        "maxDuration": 30
-      }
+  "version": 2,
+  "functions": {
+    "pages/api/transcribe.jsx": {
+      "memory": 1024,
+      "maxDuration": 60
+    },
+    "pages/api/*.jsx": {
+      "memory": 512,
+      "maxDuration": 30
     }
   }
+}
