@@ -4,13 +4,13 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	z-index: 10;
+	z-index: 2;
 }
 
 .loadingPulse {
 	position: absolute;
-	width: 80px;
-	height: 80px;
+	width: 60px;
+	height: 60px;
 	border-radius: 50%;
 	background-color: rgba(255, 140, 43, 0.1);
 	animation: pulse 1.5s ease-in-out infinite;
@@ -25,7 +25,7 @@
 
 	70% {
 		transform: scale(1);
-		box-shadow: 0 0 0 20px rgba(255, 140, 43, 0);
+		box-shadow: 0 0 0 15px rgba(255, 140, 43, 0);
 	}
 
 	100% {

@@ -11,6 +11,7 @@
 	top: 0;
 	left: 0;
 	z-index: 5;
+	pointer-events: none; /* Permet aux clics de passer à travers pour atteindre la DropBox */
 }
 
 .statusText {
@@ -22,6 +23,7 @@
 	padding: 0.5rem 1rem;
 	border-radius: 50px;
 	animation: pulse 2s infinite;
+	pointer-events: auto; /* Réactive les interactions pour ce composant spécifique */
 }
 
 @keyframes pulse {

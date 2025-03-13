@@ -1,3 +1,5 @@
+/* Mise à jour du fichier styles/DropBox.module.css */
+
 .fileInput {
 	display: none;
 }
@@ -21,6 +23,7 @@
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 	overflow: hidden;
 	position: relative;
+	z-index: 1;
 }
 
 .DropBox:hover {
@@ -32,6 +35,42 @@
 
 .DropBox:active {
 	transform: translateY(0);
+}
+
+/* Style pour l'état désactivé */
+.disabled {
+	opacity: 0.8;
+	cursor: default !important;
+	transform: none !important;
+	border-color: rgb(205, 106, 34) !important;
+}
+
+.disabled:hover {
+	transform: none !important;
+	border-color: rgb(205, 106, 34) !important;
+	background-color: rgba(0, 0, 0, 0.2) !important;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Conteneur pour les messages de traitement */
+.processingContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+	gap: 20px; /* Espace entre le loader et le message */
+}
+
+.processingMessage {
+	font-size: 1.5vw;
+	color: #f0f0f0;
+	background-color: rgba(0, 0, 0, 0.2);
+	padding: 0.7vw 1.5vw;
+	border-radius: 50px;
+	text-align: center;
+	margin-top: 10px;
 }
 
 .promptContainer {
@@ -73,6 +112,12 @@
 	transform: scale(1.1);
 }
 
+/* Désactiver l'effet d'animation pendant le traitement */
+.disabled:hover .icon {
+	color: rgb(205, 106, 34);
+	transform: none;
+}
+
 /* Effet d'ondulation lors du survol */
 .DropBox::after {
 	content: "";
@@ -89,8 +134,28 @@
 	opacity: 0;
 	transition: opacity 0.5s ease;
 	pointer-events: none;
+	z-index: -1;
 }
 
 .DropBox:hover::after {
 	opacity: 1;
+}
+
+.disabled:hover::after {
+	opacity: 0;
+}
+
+/* Styles responsifs */
+@media (max-width: 768px) {
+	.processingMessage {
+		font-size: 2.2vw;
+		padding: 1vw 2vw;
+	}
+}
+
+@media (max-width: 480px) {
+	.processingMessage {
+		font-size: 3.5vw;
+		padding: 1.5vw 3vw;
+	}
 }

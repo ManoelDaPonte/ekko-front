@@ -1,29 +1,25 @@
-import React, { useEffect, useState } from "react";
-import LoadingSpinner from "../LoadingSpinner";
-import styles from "../../styles/body/LaunchTranscription.module.css";
+import React, { useEffect } from "react";
 import axios from "axios";
 
 const LaunchTranscription = ({
 	selectedAudio,
 	setTranscription,
 	selectedCountry,
+	setIsTranscribing,
+	setProcessingStatus,
 }) => {
-	const [uploading, setUploading] = useState(false);
-	const [currentStatus, setCurrentStatus] = useState("");
-
 	const handleTransferFile = async (file) => {
 		if (!file) return;
 
 		console.log("handleTransferFile called with file:", file?.name);
 		try {
-			setUploading(true);
-			setCurrentStatus("Receiving your file...");
+			// Mettre à jour l'état de transcription
+			setIsTranscribing(true);
+			setProcessingStatus("Transcribing...");
 
 			const formData = new FormData();
 			formData.append("file", file);
 			formData.append("language", selectedCountry || "");
-
-			setCurrentStatus("Magic's on the way...");
 
 			// Appeler l'API de transcription directement
 			const response = await axios.post("/api/transcribe", formData, {
@@ -34,7 +30,7 @@ const LaunchTranscription = ({
 				timeout: 600000,
 			});
 
-			setCurrentStatus("Retrieving the result...");
+			setProcessingStatus("Almost done...");
 
 			// Mettre à jour la transcription avec le résultat
 			if (response.data && response.data.result) {
@@ -42,13 +38,15 @@ const LaunchTranscription = ({
 					"Transcription received:",
 					response.data.result.substring(0, 50) + "..."
 				);
+
+				// Utiliser le callback pour mettre à jour la transcription et réinitialiser l'état
 				setTranscription(response.data.result);
 			} else {
 				throw new Error("No transcription result returned");
 			}
 		} catch (error) {
 			console.error("Error during transcription:", error);
-			setCurrentStatus("Error during transcription");
+			setProcessingStatus("Error occurred");
 
 			// Afficher un message d'erreur plus précis si disponible
 			if (
@@ -64,9 +62,10 @@ const LaunchTranscription = ({
 			} else {
 				alert(`Error: ${error.message || "Unknown error occurred"}`);
 			}
-		} finally {
-			setUploading(false);
-			setCurrentStatus("");
+
+			// Réinitialiser l'état même en cas d'erreur
+			setIsTranscribing(false);
+			setProcessingStatus("");
 		}
 	};
 
@@ -77,14 +76,8 @@ const LaunchTranscription = ({
 		}
 	}, [selectedAudio]);
 
-	return (
-		<div className={styles.uploadContainer}>
-			{uploading && <LoadingSpinner />}
-			{uploading && (
-				<div className={styles.statusText}>{currentStatus}</div>
-			)}
-		</div>
-	);
+	// Pas de rendu visible pour ce composant - il gère seulement la logique
+	return null;
 };
 
 export default LaunchTranscription;
