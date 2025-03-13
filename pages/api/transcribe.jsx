@@ -1,15 +1,10 @@
-// pages/api/transcribe.jsx - Correction de l'extraction d'extension
+// pages/api/transcribe.jsx - Version compatible avec Vercel sans FFmpeg
 import { IncomingForm } from "formidable";
 import fs from "fs";
 import path from "path";
 import os from "os";
 import { v4 as uuidv4 } from "uuid";
 import { OpenAI } from "openai";
-import ffmpeg from "fluent-ffmpeg";
-import ffmpegStatic from "ffmpeg-static";
-
-// Configuration pour utiliser ffmpeg static
-ffmpeg.setFfmpegPath(ffmpegStatic);
 
 // Configure formidable pour désactiver le body parser par défaut
 export const config = {
@@ -18,34 +13,17 @@ export const config = {
 	},
 };
 
-// Formats de fichiers autorisés
-const ALLOWED_AUDIO_EXTENSIONS = [
-	"mp3",
-	"wav",
-	"aac",
-	"mp4",
-	"wave",
-	"mpeg",
-	"flac",
-	"ogg",
-	"wma",
-	"aiff",
-	"alac",
-];
-const ALLOWED_VIDEO_EXTENSIONS = ["mp4", "avi", "mov", "flv", "mkv", "webm"];
-
-// Formats acceptés par OpenAI
-const OPENAI_ACCEPTED_FORMATS = [
-	"flac",
-	"m4a",
+// Formats de fichiers autorisés pour OpenAI
+const SUPPORTED_FORMATS = [
 	"mp3",
 	"mp4",
 	"mpeg",
 	"mpga",
-	"oga",
-	"ogg",
+	"m4a",
 	"wav",
 	"webm",
+	"flac",
+	"ogg",
 ];
 
 // Fonction robuste pour extraire l'extension
@@ -109,7 +87,7 @@ export default async function handler(req, res) {
 			? languageField[0]
 			: languageField || "";
 
-		// Récupérer l'extension de fichier CORRECTEMENT
+		// Récupérer l'extension de fichier
 		const filename = file.originalFilename || "";
 		const fileExtension = getFileExtension(filename);
 
@@ -119,77 +97,24 @@ export default async function handler(req, res) {
 			}, Size: ${file.size / 1024} KB`
 		);
 
-		// Vérifier si le format est supporté
-		const isAudio = ALLOWED_AUDIO_EXTENSIONS.includes(fileExtension);
-		const isVideo = ALLOWED_VIDEO_EXTENSIONS.includes(fileExtension);
-
-		if (!isAudio && !isVideo) {
+		// Vérifier si le format est directement supporté par OpenAI
+		if (!SUPPORTED_FORMATS.includes(fileExtension)) {
 			return res.status(400).json({
-				message: `Unsupported file format: ${fileExtension}. Supported formats: ${[
-					...ALLOWED_AUDIO_EXTENSIONS,
-					...ALLOWED_VIDEO_EXTENSIONS,
-				].join(", ")}`,
+				message: `Unsupported file format: ${fileExtension}. OpenAI supports: ${SUPPORTED_FORMATS.join(
+					", "
+				)}`,
 			});
 		}
 
 		// Chemin du fichier source
 		const filePath = file.filepath;
 
-		// Pour les fichiers audio et vidéo, nous allons toujours créer un fichier MP3 temporaire
-		// C'est un format qui fonctionne bien avec l'API OpenAI
-		let tempAudioPath;
-
-		if (isAudio) {
-			// Si c'est un audio, nous le convertissons en MP3 pour assurer la compatibilité
-			tempAudioPath = path.join(tempDir, "audio.mp3");
-
-			console.log("Converting audio to MP3...");
-			await new Promise((resolve, reject) => {
-				ffmpeg(filePath)
-					.output(tempAudioPath)
-					.audioCodec("libmp3lame")
-					.format("mp3")
-					.on("end", resolve)
-					.on("error", (err) => {
-						console.error("FFmpeg error:", err);
-						reject(
-							new Error(
-								`FFmpeg error during audio conversion: ${err.message}`
-							)
-						);
-					})
-					.run();
-			});
-		} else if (isVideo) {
-			// Si c'est une vidéo, nous extrayons l'audio en MP3
-			tempAudioPath = path.join(tempDir, "audio.mp3");
-
-			console.log("Extracting audio from video to MP3...");
-			await new Promise((resolve, reject) => {
-				ffmpeg(filePath)
-					.output(tempAudioPath)
-					.noVideo()
-					.audioCodec("libmp3lame")
-					.format("mp3")
-					.on("end", resolve)
-					.on("error", (err) => {
-						console.error("FFmpeg error:", err);
-						reject(
-							new Error(
-								`FFmpeg error during video extraction: ${err.message}`
-							)
-						);
-					})
-					.run();
-			});
-		}
-
 		try {
-			console.log(`Transcribing audio from ${tempAudioPath}...`);
+			console.log(`Transcribing file directly with OpenAI: ${filePath}`);
 
-			// Transcrire l'audio
+			// Transcrire l'audio directement sans conversion FFmpeg
 			const transcription = await openai.audio.transcriptions.create({
-				file: fs.createReadStream(tempAudioPath),
+				file: fs.createReadStream(filePath),
 				model: "whisper-1",
 				language: language || undefined,
 			});

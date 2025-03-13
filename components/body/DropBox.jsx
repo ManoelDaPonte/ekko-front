@@ -1,4 +1,4 @@
-// components/body/DropBox.jsx - Version encore plus simple
+// components/body/DropBox.jsx - Compatible avec les formats OpenAI
 import React, { useRef, useState } from "react";
 import { FaMicrophone } from "react-icons/fa";
 import LoadingSpinner from "../LoadingSpinner";
@@ -10,22 +10,31 @@ const AudioFileHandler = ({
 	isTranscribing,
 	currentStatus,
 }) => {
+	// Formats directement supportés par OpenAI
+	const SUPPORTED_FORMATS = [
+		"mp3",
+		"mp4",
+		"mpeg",
+		"mpga",
+		"m4a",
+		"wav",
+		"webm",
+		"flac",
+		"ogg",
+	];
+
 	const audio_mime_types = [
 		"audio/mpeg",
+		"audio/mp3",
+		"audio/mp4",
+		"audio/mpga",
+		"audio/m4a",
 		"audio/wav",
-		"audio/aac",
+		"audio/webm",
 		"audio/flac",
 		"audio/ogg",
-		"audio/x-ms-wma",
-		"audio/x-aiff",
-		"audio/alac",
-		"audio/mp4",
-		"audio/wave",
-		"video/mpeg",
-		"video/x-matroska",
-		"video/quicktime",
-		"video/mp4",
 	];
+
 	const fileInputRef = useRef(null);
 	const [isDragOver, setIsDragOver] = useState(false);
 	const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB limite pour Vercel
@@ -34,6 +43,12 @@ const AudioFileHandler = ({
 		const file = event.target.files[0];
 		if (file && isAudioFile(file)) {
 			handleSelectedFile(file);
+		} else if (file) {
+			alert(
+				`Format non supporté. Formats acceptés: ${SUPPORTED_FORMATS.join(
+					", "
+				)}`
+			);
 		}
 		event.target.value = null; // Resetting the input value
 	};
@@ -41,20 +56,7 @@ const AudioFileHandler = ({
 	const isAudioFile = (file) => {
 		// Vérification de l'extension
 		const extension = file.name.split(".").pop().toLowerCase();
-		const audioExtensions = [
-			"mp3",
-			"wav",
-			"aac",
-			"flac",
-			"ogg",
-			"wma",
-			"aiff",
-			"mp4",
-			"mpeg",
-			"mkv",
-			"mov",
-		];
-		return audioExtensions.includes(extension);
+		return SUPPORTED_FORMATS.includes(extension);
 	};
 
 	const handleSelectedFile = (file) => {
@@ -89,7 +91,9 @@ const AudioFileHandler = ({
 				handleSelectedFile(file);
 			} else {
 				alert(
-					"Format de fichier non supporté. Veuillez sélectionner un fichier audio ou vidéo."
+					`Format non supporté. Formats acceptés: ${SUPPORTED_FORMATS.join(
+						", "
+					)}`
 				);
 			}
 		}
