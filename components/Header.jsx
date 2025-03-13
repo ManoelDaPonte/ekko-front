@@ -5,7 +5,9 @@ import styles from "../styles/Header.module.css";
 const Header = () => {
 	return (
 		<div className={styles.header}>
-			<Image src={logo} alt="Ekko Logo" className={styles.smallImage} />
+			<div className={styles.logoContainer}>
+				<Image src={logo} alt="Ekko Logo" className={styles.logo} />
+			</div>
 		</div>
 	);
 };

@@ -1,41 +1,96 @@
 .fileInput {
-  display: none;
+	display: none;
 }
 
 .DropBox {
-  width: 40vw;
-  height: 20vw;
-  border: 2px dotted rgb(205, 106, 34);
-  cursor: pointer;
-  border-radius: 20px;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.2);
-  color: #f2f4f6;
-  display: flex;
-  flex-direction: column; /* Vertical centering */
-  justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
-  margin-left: auto;
-  margin-right: auto;
+	width: 40vw;
+	height: 20vw;
+	border: 2px dashed rgb(205, 106, 34);
+	cursor: pointer;
+	border-radius: 20px;
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0.2);
+	color: #f2f4f6;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	position: relative;
 }
+
+.DropBox:hover {
+	transform: translateY(-5px);
+	border-color: rgb(255, 136, 44);
+	background-color: rgba(0, 0, 0, 0.3);
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.DropBox:active {
+	transform: translateY(0);
+}
+
 .promptContainer {
-  font-size: 1.5vw; /* Adjust font size to make text bigger */
-  color: #555; /* Adjust color */
-  font-weight: bold; /* Bold font */
-  text-align: center; /* Center align text */
+	font-size: 1.5vw;
+	color: #ccc;
+	font-weight: bold;
+	text-align: center;
+	transition: all 0.3s ease;
 }
 
 .promptContainerDrop {
-  font-size: 3vw; /* Adjust font size to make text bigger */
-  padding: 2vw;
-  background-color: rgba(0, 0, 0, 0.2); /* Adjust color */
-  color: #8f8f8f;
-  border-radius: 20vw;
-  border: none;
-  font-weight: bold; /* Bold font */
-  text-align: center; /* Center align text */
+	font-size: 3vw;
+	padding: 2vw;
+	background-color: rgba(0, 0, 0, 0.2);
+	color: #f0f0f0;
+	border-radius: 20vw;
+	border: none;
+	font-weight: bold;
+	text-align: center;
+	transition: all 0.3s ease;
 }
 
 .separator {
-  height: 1vw; /* Add space between separators */
+	height: 1vw;
+}
+
+.iconContainer {
+	margin-bottom: 1vw;
+}
+
+.icon {
+	font-size: 4vw;
+	color: rgb(205, 106, 34);
+	transition: all 0.3s ease;
+}
+
+.DropBox:hover .icon {
+	color: rgb(255, 136, 44);
+	transform: scale(1.1);
+}
+
+/* Effet d'ondulation lors du survol */
+.DropBox::after {
+	content: "";
+	position: absolute;
+	top: -50%;
+	left: -50%;
+	width: 200%;
+	height: 200%;
+	background: radial-gradient(
+		circle,
+		rgba(255, 255, 255, 0.1) 0%,
+		transparent 70%
+	);
+	opacity: 0;
+	transition: opacity 0.5s ease;
+	pointer-events: none;
+}
+
+.DropBox:hover::after {
+	opacity: 1;
 }

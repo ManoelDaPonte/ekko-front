@@ -12,6 +12,8 @@ const LaunchTranscription = ({
 	const [currentStatus, setCurrentStatus] = useState("");
 
 	const handleTransferFile = async (file) => {
+		if (!file) return;
+
 		console.log("handleTransferFile called with file:", file?.name);
 		try {
 			setUploading(true);
@@ -68,20 +70,6 @@ const LaunchTranscription = ({
 		}
 	};
 
-	const handleDrop = (event) => {
-		event.preventDefault();
-		const droppedFile = event.dataTransfer.files[0];
-		if (droppedFile) {
-			handleTransferFile(droppedFile);
-		} else {
-			alert("Please drop a valid audio or video file.");
-		}
-	};
-
-	const handleDragOver = (event) => {
-		event.preventDefault();
-	};
-
 	useEffect(() => {
 		// Lancer la transcription lorsqu'un fichier est sélectionné
 		if (selectedAudio) {
@@ -90,13 +78,11 @@ const LaunchTranscription = ({
 	}, [selectedAudio]);
 
 	return (
-		<div
-			onDrop={handleDrop}
-			onDragOver={handleDragOver}
-			className={styles.uploadContainer}
-		>
+		<div className={styles.uploadContainer}>
 			{uploading && <LoadingSpinner />}
-			{uploading && <p>{currentStatus}</p>}
+			{uploading && (
+				<div className={styles.statusText}>{currentStatus}</div>
+			)}
 		</div>
 	);
 };

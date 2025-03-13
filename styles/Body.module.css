@@ -1,17 +1,50 @@
 .buttonContainer {
-    margin-top: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+	margin-top: 5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	width: 100%;
 }
 
 .body {
-    height: 100%;
-    width: 97%;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+	height: 100%;
+	padding: 0 1rem;
 }
 
 .element {
-    margin-bottom: 50px;
+	margin-bottom: 2.5rem;
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+	.buttonContainer {
+		margin-top: 3rem;
+	}
+}
+
+@media (max-width: 768px) {
+	.buttonContainer {
+		margin-top: 2rem;
+		flex-direction: column;
+	}
+
+	.body {
+		padding: 0 0.5rem;
+	}
+
+	.element {
+		margin-bottom: 1.5rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.buttonContainer {
+		margin-top: 1.5rem;
+	}
 }

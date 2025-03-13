@@ -6,10 +6,11 @@
 	background-color: rgba(80, 80, 80, 0.1);
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
-	padding-left: 50px;
-	padding-right: 50px;
+	padding: 20px 50px;
 	margin-left: auto;
 	margin-right: auto;
+	min-height: 200px;
+	max-width: 1200px;
 }
 
 .header {
@@ -21,20 +22,22 @@
 	align-items: center;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
-	padding: 10px 10px;
+	padding: 10px 20px;
 	margin-left: auto;
 	margin-right: auto;
+	min-height: 50px;
+	max-width: 1200px;
 }
 
 .header h2 {
 	margin: 0;
 	color: white; /* Set header title color */
-	padding-left: 20px;
 	font-size: 1.2rem;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	max-width: 50vw; /* Limit width to avoid overflowing */
+	padding-left: 20px;
 }
 
 .header button {
@@ -53,6 +56,7 @@
 	width: 80vw;
 	margin-left: auto;
 	margin-right: auto;
+	max-width: 1200px;
 }
 
 .contentWrapper2 {
@@ -61,6 +65,7 @@
 	background-color: rgba(80, 80, 80, 0.1);
 	margin-left: auto;
 	margin-right: auto;
+	max-width: 1200px;
 }
 
 .iconsWrapper {
@@ -87,6 +92,7 @@
 
 .container {
 	margin-block: 100px;
+	width: 100%;
 }
 
 .placeholder {
@@ -100,4 +106,73 @@
 	white-space: pre-wrap; /* Preserve line breaks */
 	padding: 20px 0;
 	line-height: 1.5;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+	.scrollableBox,
+	.header,
+	.contentWrapper,
+	.contentWrapper2 {
+		width: 90vw;
+	}
+}
+
+@media (max-width: 768px) {
+	.scrollableBox {
+		padding: 15px 20px;
+		height: 40vh;
+	}
+
+	.header {
+		padding: 10px 15px;
+		height: auto;
+	}
+
+	.header h2 {
+		font-size: 1rem;
+		padding-left: 5px;
+		max-width: 40vw;
+	}
+
+	.container {
+		margin-block: 50px;
+	}
+
+	.iconsWrapper {
+		gap: 10px;
+		padding-right: 5px;
+	}
+}
+
+@media (max-width: 480px) {
+	.scrollableBox,
+	.header,
+	.contentWrapper,
+	.contentWrapper2 {
+		width: 95vw;
+		border-radius: 8px;
+	}
+
+	.scrollableBox {
+		padding: 10px;
+		height: 50vh;
+	}
+
+	.header {
+		padding: 8px 10px;
+	}
+
+	.header h2 {
+		font-size: 0.9rem;
+		max-width: 30vw;
+	}
+
+	.icon {
+		font-size: 1rem;
+	}
+
+	.container {
+		margin-block: 30px;
+	}
 }
