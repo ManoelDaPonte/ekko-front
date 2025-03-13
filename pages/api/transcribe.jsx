@@ -1,3 +1,4 @@
+// pages/api/transcribe.jsx - Correction de l'extraction d'extension
 import { IncomingForm } from "formidable";
 import fs from "fs";
 import path from "path";
@@ -47,8 +48,12 @@ const OPENAI_ACCEPTED_FORMATS = [
 	"webm",
 ];
 
-// Taille maximale de fichier pour OpenAI (25 MB)
-const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25 MB in bytes
+// Fonction robuste pour extraire l'extension
+function getFileExtension(filename) {
+	return filename
+		.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 2)
+		.toLowerCase();
+}
 
 export default async function handler(req, res) {
 	if (req.method !== "POST") {
@@ -77,7 +82,8 @@ export default async function handler(req, res) {
 	try {
 		// Configurer formidable
 		const options = {
-			maxFileSize: 100 * 1024 * 1024, // 100 MB max pour le téléchargement initial
+			maxFileSize: 10 * 1024 * 1024, // 10 MB max
+			keepExtensions: true,
 		};
 
 		// Parser le formulaire
@@ -103,14 +109,14 @@ export default async function handler(req, res) {
 			? languageField[0]
 			: languageField || "";
 
-		// Récupérer l'extension de fichier
+		// Récupérer l'extension de fichier CORRECTEMENT
 		const filename = file.originalFilename || "";
-		const fileExtension = filename.split(".").pop().toLowerCase();
+		const fileExtension = getFileExtension(filename);
 
 		console.log(
 			`Processing file: ${filename}, Extension: ${fileExtension}, Language: ${
 				language || "default"
-			}`
+			}, Size: ${file.size / 1024} KB`
 		);
 
 		// Vérifier si le format est supporté
@@ -178,27 +184,10 @@ export default async function handler(req, res) {
 			});
 		}
 
-		// Vérifier la taille du fichier audio converti
-		const stats = fs.statSync(tempAudioPath);
-		console.log(
-			`Audio file size: ${(stats.size / (1024 * 1024)).toFixed(2)} MB`
-		);
-
-		if (stats.size > MAX_FILE_SIZE) {
-			// Nettoyer
-			fs.rmSync(tempDir, { recursive: true, force: true });
-			return res.status(400).json({
-				message: `Audio file size (${(
-					stats.size /
-					(1024 * 1024)
-				).toFixed(2)} MB) exceeds limit of 25 MB for OpenAI API`,
-			});
-		}
-
 		try {
 			console.log(`Transcribing audio from ${tempAudioPath}...`);
 
-			// Transcrire l'audio avec un nom de fichier simple et connu
+			// Transcrire l'audio
 			const transcription = await openai.audio.transcriptions.create({
 				file: fs.createReadStream(tempAudioPath),
 				model: "whisper-1",
@@ -221,9 +210,6 @@ export default async function handler(req, res) {
 			return res.status(500).json({
 				message: "Error transcribing audio",
 				error: openaiError.message,
-				details: openaiError.response
-					? JSON.stringify(openaiError.response)
-					: "No detailed error information",
 			});
 		}
 	} catch (error) {
@@ -232,29 +218,6 @@ export default async function handler(req, res) {
 		// Nettoyer les fichiers temporaires si le répertoire existe
 		if (fs.existsSync(tempDir)) {
 			fs.rmSync(tempDir, { recursive: true, force: true });
-		}
-
-		// Messages d'erreur plus spécifiques
-		if (error.name === "PayloadTooLargeError") {
-			return res.status(413).json({
-				message: "File too large",
-				error: error.message,
-			});
-		}
-
-		if (error.code === "ENOENT") {
-			return res.status(500).json({
-				message: "File processing error",
-				error: "File not found or could not be accessed",
-			});
-		}
-
-		// Pour les erreurs OpenAI
-		if (error.response && error.response.data) {
-			return res.status(500).json({
-				message: "OpenAI API error",
-				error: error.response.data.error.message || error.message,
-			});
 		}
 
 		return res.status(500).json({

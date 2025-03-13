@@ -1,3 +1,4 @@
+// components/body/DropBox.jsx - Version encore plus simple
 import React, { useRef, useState } from "react";
 import { FaMicrophone } from "react-icons/fa";
 import LoadingSpinner from "../LoadingSpinner";
@@ -27,21 +28,18 @@ const AudioFileHandler = ({
 	];
 	const fileInputRef = useRef(null);
 	const [isDragOver, setIsDragOver] = useState(false);
+	const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB limite pour Vercel
 
 	const handleFileChange = (event) => {
 		const file = event.target.files[0];
 		if (file && isAudioFile(file)) {
-			setSelectedAudio(file);
+			handleSelectedFile(file);
 		}
 		event.target.value = null; // Resetting the input value
 	};
 
 	const isAudioFile = (file) => {
-		// Vérification plus robuste des types de fichiers
-		if (audio_mime_types.includes(file.type)) {
-			return true;
-		}
-		// Vérification de l'extension pour les cas où le type MIME n'est pas correctement identifié
+		// Vérification de l'extension
 		const extension = file.name.split(".").pop().toLowerCase();
 		const audioExtensions = [
 			"mp3",
@@ -59,16 +57,36 @@ const AudioFileHandler = ({
 		return audioExtensions.includes(extension);
 	};
 
+	const handleSelectedFile = (file) => {
+		// Vérifier la taille du fichier - si plus grand que 4MB, tronquer
+		if (file.size > MAX_FILE_SIZE) {
+			const reader = new FileReader();
+			reader.onload = function (e) {
+				const arrayBuffer = e.target.result;
+				const truncatedBuffer = arrayBuffer.slice(0, MAX_FILE_SIZE);
+
+				// Utiliser le nom original pour conserver l'extension
+				const truncatedFile = new File([truncatedBuffer], file.name, {
+					type: file.type,
+				});
+				setSelectedAudio(truncatedFile);
+			};
+			reader.readAsArrayBuffer(file);
+		} else {
+			// Fichier ok tel quel
+			setSelectedAudio(file);
+		}
+	};
+
 	const handleDrop = (event) => {
 		event.preventDefault();
 		event.stopPropagation();
 		setIsDragOver(false);
 
-		// Vérifier s'il y a des fichiers
 		if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
 			const file = event.dataTransfer.files[0];
 			if (isAudioFile(file)) {
-				setSelectedAudio(file);
+				handleSelectedFile(file);
 			} else {
 				alert(
 					"Format de fichier non supporté. Veuillez sélectionner un fichier audio ou vidéo."
@@ -90,7 +108,6 @@ const AudioFileHandler = ({
 	};
 
 	const handleDropBoxClick = () => {
-		// Empêche de cliquer sur le dropbox pendant la transcription
 		if (!isTranscribing) {
 			fileInputRef.current.click();
 		}

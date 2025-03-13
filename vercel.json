@@ -9,5 +9,17 @@
       "memory": 512,
       "maxDuration": 30
     }
-  }
+  },
+  "routes": [
+    {
+      "src": "/api/transcribe",
+      "dest": "/api/transcribe",
+      "methods": ["POST"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST",
+        "Access-Control-Allow-Headers": "Content-Type"
+      }
+    }
+  ]
 }
