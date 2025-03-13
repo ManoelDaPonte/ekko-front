@@ -1,16 +1,16 @@
-import Header from "../components/header/Header";
-import Body from "../components/body/Body";
-import Footer from "../components/footer/Footer";
+import Header from "../components/Header";
+import BodyTranscription from "../components/BodyTranscription";
 import styles from "../styles/app.module.css";
 
 const App = () => {
-  return (
-    <div className={styles.appContainer}>
-      <Header />
-      <Body />
-      <Footer />
-    </div>
-  );
+	return (
+		<div className={styles.appContainer}>
+			<Header />
+			<div className={styles.spacer}>
+				<BodyTranscription />
+			</div>
+		</div>
+	);
 };
 
 export default App;
