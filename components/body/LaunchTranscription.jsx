@@ -12,13 +12,16 @@ const LaunchTranscription = ({
 	const [currentStatus, setCurrentStatus] = useState("");
 
 	const handleTransferFile = async (file) => {
+		console.log("handleTransferFile called with file:", file?.name);
 		try {
 			setUploading(true);
-			setCurrentStatus("Analysing your file...");
+			setCurrentStatus("Receiving your file...");
 
 			const formData = new FormData();
 			formData.append("file", file);
 			formData.append("language", selectedCountry || "");
+
+			setCurrentStatus("Magic's on the way...");
 
 			// Appeler l'API de transcription directement
 			const response = await axios.post("/api/transcribe", formData, {
@@ -29,9 +32,14 @@ const LaunchTranscription = ({
 				timeout: 600000,
 			});
 
+			setCurrentStatus("Retrieving the result...");
+
 			// Mettre à jour la transcription avec le résultat
 			if (response.data && response.data.result) {
-				setCurrentStatus("Transcription completed!");
+				console.log(
+					"Transcription received:",
+					response.data.result.substring(0, 50) + "..."
+				);
 				setTranscription(response.data.result);
 			} else {
 				throw new Error("No transcription result returned");
@@ -47,11 +55,16 @@ const LaunchTranscription = ({
 				error.response.data.message
 			) {
 				alert(`Error: ${error.response.data.message}`);
+			} else if (error.message.includes("timeout")) {
+				alert(
+					"The transcription process timed out. Please try with a smaller file."
+				);
 			} else {
 				alert(`Error: ${error.message || "Unknown error occurred"}`);
 			}
 		} finally {
 			setUploading(false);
+			setCurrentStatus("");
 		}
 	};
 

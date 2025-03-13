@@ -1,148 +1,104 @@
 import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../LoadingSpinner";
-import styles from "../../styles/LaunchTranscription.module.css";
+import styles from "../../styles/body/LaunchTranscription.module.css";
+import axios from "axios";
 
 const LaunchTranscription = ({
-    selectedAudio,
-    setTranscription,
-    selectedCountry,
+	selectedAudio,
+	setTranscription,
+	selectedCountry,
 }) => {
-    const [uploading, setUploading] = useState(false);
-    const [currentStatus, setCurrentStatus] = useState(""); // Step 1: New state variable
+	const [uploading, setUploading] = useState(false);
+	const [currentStatus, setCurrentStatus] = useState("");
 
-    const timeout = (ms) => {
-        return new Promise((_, reject) =>
-            setTimeout(
-                () => reject(new Error(`Operation timed out after ${ms} ms`)),
-                ms
-            )
-        );
-    };
+	const handleTransferFile = async (file) => {
+		console.log("handleTransferFile called with file:", file?.name);
+		try {
+			setUploading(true);
+			setCurrentStatus("Receiving your file...");
 
-    const determineFunctionUrl = (file) => {
-        // Check file type (based on MIME type for simplicity)
-        const isVideo = file.type.startsWith("video/");
-        const isAudio = file.type.startsWith("audio/");
+			const formData = new FormData();
+			formData.append("file", file);
+			formData.append("language", selectedCountry || "");
 
-        if (isVideo)
-            return "https://first-function-app-mano.azurewebsites.net/api/UploadVideo?code=OA1fpGFHMLEOovpL4sFZGKe0bCgufobl8GY2z6N96om9AzFu__FHuw==";
-        if (isAudio)
-            return "https://first-function-app-mano.azurewebsites.net/api/UploadAudio?code=hHOvVtha7IpxIm2HPRvLL8sw1auxVPUypy4Yb9w44i6CAzFuaDNeEA==";
-        return null; // if file type doesn't match any category
-    };
+			setCurrentStatus("Magic's on the way...");
 
-    const callAzureFunction = async (url, formData) => {
-        const response = await fetch(url, {
-            method: "POST",
-            body: formData,
-        });
+			// Appeler l'API de transcription directement
+			const response = await axios.post("/api/transcribe", formData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+				// 10 minutes timeout
+				timeout: 600000,
+			});
 
-        if (!response.ok)
-            throw new Error("Error sending the file to Azure Function.");
+			setCurrentStatus("Retrieving the result...");
 
-        const responseData = await response.json();
-        return responseData.blob_name; // This will return an array of blob names or UUIDs.
-    };
+			// Mettre à jour la transcription avec le résultat
+			if (response.data && response.data.result) {
+				console.log(
+					"Transcription received:",
+					response.data.result.substring(0, 50) + "..."
+				);
+				setTranscription(response.data.result);
+			} else {
+				throw new Error("No transcription result returned");
+			}
+		} catch (error) {
+			console.error("Error during transcription:", error);
+			setCurrentStatus("Error during transcription");
 
-    const getTranslation = async (blobName, language) => {
-        const payload = {
-            blob_name: Array.isArray(blobName) ? blobName : [blobName], // Check if blobName is already an array
-            language: language,
-        };
+			// Afficher un message d'erreur plus précis si disponible
+			if (
+				error.response &&
+				error.response.data &&
+				error.response.data.message
+			) {
+				alert(`Error: ${error.response.data.message}`);
+			} else if (error.message.includes("timeout")) {
+				alert(
+					"The transcription process timed out. Please try with a smaller file."
+				);
+			} else {
+				alert(`Error: ${error.message || "Unknown error occurred"}`);
+			}
+		} finally {
+			setUploading(false);
+			setCurrentStatus("");
+		}
+	};
 
-        // Log the payload to the console
-        console.log("Sending payload:", JSON.stringify(payload, null, 2));
+	const handleDrop = (event) => {
+		event.preventDefault();
+		const droppedFile = event.dataTransfer.files[0];
+		if (droppedFile) {
+			handleTransferFile(droppedFile);
+		} else {
+			alert("Please drop a valid audio or video file.");
+		}
+	};
 
-        const response = await fetch(
-            `https://first-function-app-mano.azurewebsites.net/api/UploadTranscription?code=bSsy9GF_Y1_Si7Mhb74jmcAtY5fVsshxoYg98qagcjq_AzFuGsw2OA==`,
-            {
-                method: "POST",
-                body: JSON.stringify(payload),
-                headers: { "Content-Type": "application/json" },
-            }
-        );
+	const handleDragOver = (event) => {
+		event.preventDefault();
+	};
 
-        if (!response.ok) throw new Error("Error fetching translation UUID.");
+	useEffect(() => {
+		// Lancer la transcription lorsqu'un fichier est sélectionné
+		if (selectedAudio) {
+			handleTransferFile(selectedAudio);
+		}
+	}, [selectedAudio]);
 
-        const responseData = await response.json();
-        return responseData.blob_name;
-    };
-
-    const fetchTranslationResult = async (uuid) => {
-        const response = await fetch(
-            `https://first-function-app-mano.azurewebsites.net/api/DownloadTrancription?code=ppPVPaNIh8s0zO_ImAjhaKQU3qPeeYLU-o6Je0plXYGHAzFuRtqrag==&blob_name=${uuid}`
-        );
-        if (!response.ok) throw new Error("Error fetching the translation.");
-
-        const responseData = await response.json();
-        return responseData.result;
-    };
-
-    const handleTransferFile = async (file) => {
-        console.log("handleTransferFile invoked");
-        try {
-            setUploading(true);
-
-            const formDataAudio = new FormData();
-            formDataAudio.append("file", file);
-
-            const functionUrl = determineFunctionUrl(file);
-            if (!functionUrl) {
-                alert("Unsupported file type!");
-                return;
-            }
-
-            setCurrentStatus("Receiving your file..."); // Step 2: Update the message
-            const UUID = await callAzureFunction(functionUrl, formDataAudio);
-
-            setCurrentStatus("Magic's on the way...");
-            const translationUUID = await Promise.race([
-                getTranslation(UUID, selectedCountry),
-                timeout(600000), // 10 minutes = 600,000 milliseconds
-            ]);
-
-            setCurrentStatus("Retrieving the result...");
-            const translation = await fetchTranslationResult(translationUUID);
-
-            console.log("Translation:", translation);
-            setTranscription(translation);
-        } catch (error) {
-            console.error("Error:", error);
-        } finally {
-            setUploading(false);
-        }
-    };
-
-    const handleDrop = (event) => {
-        event.preventDefault();
-        const droppedFile = event.dataTransfer.files[0];
-        if (droppedFile) {
-            handleTransferFile(droppedFile);
-        } else {
-            alert("Please drop a valid audio file.");
-        }
-    };
-
-    const handleDragOver = (event) => {
-        event.preventDefault();
-    };
-
-    useEffect(() => {
-        if (selectedAudio) {
-            handleTransferFile(selectedAudio);
-        }
-    }, [selectedAudio]);
-
-    return (
-        <div
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            className={styles.uploadContainer}
-        >
-            {uploading && <LoadingSpinner />}
-            {uploading && <p>{currentStatus}</p>}
-        </div>
-    );
+	return (
+		<div
+			onDrop={handleDrop}
+			onDragOver={handleDragOver}
+			className={styles.uploadContainer}
+		>
+			{uploading && <LoadingSpinner />}
+			{uploading && <p>{currentStatus}</p>}
+		</div>
+	);
 };
 
 export default LaunchTranscription;
