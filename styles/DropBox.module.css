@@ -1,4 +1,4 @@
-/* Mise à jour du fichier styles/DropBox.module.css */
+/* Mise à jour du fichier styles/DropBox.module.css avec un meilleur responsive */
 
 .fileInput {
 	display: none;
@@ -24,6 +24,8 @@
 	overflow: hidden;
 	position: relative;
 	z-index: 1;
+	max-width: 600px; /* Limite la largeur maximale */
+	min-height: 240px; /* Assure une hauteur minimale */
 }
 
 .DropBox:hover {
@@ -145,17 +147,88 @@
 	opacity: 0;
 }
 
-/* Styles responsifs */
-@media (max-width: 768px) {
+/* Styles responsifs améliorés */
+@media (max-width: 1024px) {
+	.DropBox {
+		width: 50vw;
+		height: 25vw;
+		min-height: 200px;
+	}
+
+	.promptContainerDrop {
+		font-size: 24px;
+		padding: 16px;
+	}
+
+	.promptContainer {
+		font-size: 16px;
+	}
+
+	.icon {
+		font-size: 36px;
+	}
+
 	.processingMessage {
-		font-size: 2.2vw;
-		padding: 1vw 2vw;
+		font-size: 16px;
+		padding: 8px 16px;
+	}
+}
+
+@media (max-width: 768px) {
+	.DropBox {
+		width: 70vw;
+		height: 35vw;
+		min-height: 180px;
+		border-width: 2px;
+	}
+
+	.promptContainerDrop {
+		font-size: 22px;
+		padding: 14px;
+	}
+
+	.promptContainer {
+		font-size: 14px;
+	}
+
+	.icon {
+		font-size: 32px;
+	}
+
+	.processingMessage {
+		font-size: 14px;
+		padding: 7px 14px;
 	}
 }
 
 @media (max-width: 480px) {
+	.DropBox {
+		width: 85vw;
+		height: auto;
+		min-height: 160px;
+		padding: 20px 0;
+		border-width: 1.5px;
+	}
+
+	.promptContainerDrop {
+		font-size: 18px;
+		padding: 12px;
+	}
+
+	.promptContainer {
+		font-size: 12px;
+	}
+
+	.separator {
+		height: 8px;
+	}
+
+	.icon {
+		font-size: 28px;
+	}
+
 	.processingMessage {
-		font-size: 3.5vw;
-		padding: 1.5vw 3vw;
+		font-size: 12px;
+		padding: 6px 12px;
 	}
 }

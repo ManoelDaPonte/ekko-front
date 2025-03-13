@@ -6,7 +6,12 @@ const Header = () => {
 	return (
 		<div className={styles.header}>
 			<div className={styles.logoContainer}>
-				<Image src={logo} alt="Ekko Logo" className={styles.logo} />
+				<Image
+					src={logo}
+					alt="Ekko Logo"
+					className={styles.logo}
+					priority // Améliore le chargement prioritaire de l'image
+				/>
 			</div>
 		</div>
 	);
